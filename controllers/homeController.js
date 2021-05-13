@@ -10,7 +10,7 @@ let long = req.query.long;
 
 const apiCall = await axios.get(`http://api.positionstack.com/v1/reverse?access_key=${process.env.ACCESS_KEY}&query=${long},${lat}&limit=1`);
 const data = apiCall.data.data[0];
-const numbers = ["+918349695320","+919571356059","+917905172341"];
+const numbers = ["+917905172341","+919571356059","+918349695320"];
 
 try{
 const create = await client.messages.create({
