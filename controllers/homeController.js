@@ -8,20 +8,27 @@ const client = require('twilio')(accountSid, authToken);
 let lat = req.query.lat;
 let long = req.query.long;
 
-const apiCall = await axios.get(`http://api.positionstack.com/v1/reverse?access_key=${process.env.ACCESS_KEY}&query=${long},${lat}&limit=1`);
+let apiCall;
+try{
+    apiCall = await axios.get(`http://api.positionstack.com/v1/reverse?access_key=${process.env.ACCESS_KEY}&query=${long},${lat}&limit=1`);
+}catch(err){
+    console.log(err);
+}
 const data = apiCall.data.data[0];
-const numbers = ["+917905172341","+919571356059","+918349695320"];
+const numbers = ["+918349695320","+919571356059","+917905172341"];
 
 try{
+    numbers.forEach(async number => {
 const create = await client.messages.create({
      body: `Unfotunately there has been an accident occurred in ${data.name} ,${data.region} exact location : longitude ${data.longitude} , latitude ${data.latitude}`,
      from: '+12055461585',
-     to: numbers
+     to: number
    });  
 
    res.status(200).send({
     message : "Message sent succesfully"
-    })
+    });
+});
 
 }catch(err){
     console.log(err);
