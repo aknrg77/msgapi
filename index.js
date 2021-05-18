@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config();
+const db = require('./config/mongoose');
 const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

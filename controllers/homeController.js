@@ -4,6 +4,7 @@ const sendMsg = async(req,res) =>{
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+const User = require('../models/user');
 
 let lat = req.query.lat;
 let long = req.query.long;
@@ -15,7 +16,16 @@ try{
     console.log(err);
 }
 const data = apiCall.data.data[0];
-const numbers = ["+918349695320","+919571356059","+917905172341"];
+let users;
+try{
+users = await User.find({});
+}catch(err){
+    console.log(err);
+}
+const numbers = [];
+    users.forEach(function(x){
+        numbers.push(x.phone);
+    });
 
 try{
     numbers.forEach(async number => {
